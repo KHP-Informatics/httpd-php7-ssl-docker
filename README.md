@@ -10,7 +10,7 @@ before the VOLUME line or they'll be over-written.
 
 ### TO BUILD:
 
-docker build -t cassj/apache-php-ssl-docker:0.1 .
+docker build -t whatever/apache-php-ssl-docker:0.1 .
 
 ### TO RUN:
 
