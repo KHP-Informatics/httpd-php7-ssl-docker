@@ -3,10 +3,6 @@
 #  fetch php
 cd /tmp
 
-#curl -L "http://nz2.php.net/get/php-5.6.20.tar.bz2/from/this/mirror" > php-5.6.20.tar.bz2
-#tar -xvjf php-5.6.20.tar.bz2
-#cd php-5.6.20
-
 curl -L  "http://nz2.php.net/get/php-7.0.5.tar.bz2/from/this/mirror" > php-7.0.5.tar.bz2
 tar -xvjf php-7.0.5.tar.bz2
 cd php-7.0.5
