@@ -26,15 +26,32 @@ The container provides a self-signed SSL cert but if you have a
 proper one you can also bind-mount the key and cert files at 
 this point
 
-e.g.
+Similarly, if you want to send mail through php the container has ssmtp
+installed, but you'll need to provide a valid config file with details
+of your smtp server, e.g.:
+
+  hostname=my.server.com
+  mailhub=smtp.gmail.com:587
+  UseSTARTTLS=YES
+  AuthUser=someuser@gmail.com
+  AuthPass=somepass
+
+(
+ note - if you're using a Google account with 2-factor authentication then
+ you will need to generate an app password for AuthPass which you can do at
+ https://security.google.com/settings/security/apppasswords
+)
+
+So, run your data container something like:
 
     docker run -it --name=php-app-data \
     -v /tmp/server.pem:/usr/local/apache2/conf/server.pem \
     -v /tmp/server.key:/usr/local/apache2/conf/server.key \
+    -v /tmp/ssmtp.conf:/etc/ssmtp/ssmtp.conf\
     cassj/apache-php-ssl-docker:0.1  /bin/bash
 
       cd /var/www/php-app
-      printf "<?php\nphpinfo();\n?>\n" > test.php 
+      printf "<?php\nphpinfo();\n?>\n" > index.php 
       chown apache:apache test.php
       exit
 

@@ -15,7 +15,7 @@ ln -s /usr/lib/x86_64-linux-gnu/liblber-2.4.so.2 /usr/lib/
 ln -s /usr/lib/x86_64-linux-gnu/liblber-2.4.so.2.10.3 /usr/lib/
 
 # Configure, Compile and Install
-./configure --with-apxs2=/usr/local/apache2/bin/apxs --without-pear  --enable-mbstring --with-openssl --with-ldap --with-gd --with-zlib
+./configure --with-apxs2=/usr/local/apache2/bin/apxs --without-pear  --enable-mbstring --with-openssl --with-ldap --with-gd --with-zlib --with-mysqli
 make 
 make install
 

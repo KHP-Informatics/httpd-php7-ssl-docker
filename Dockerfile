@@ -1,7 +1,8 @@
 FROM httpd
 MAINTAINER Cass Johnston <cassjohnston@gmail.com>
 
-RUN apt-get update && apt-get install -q -y  vim curl bison git openssl libssl-dev pkg-config libpng12-0 libpng12-dev libldap-2.4-2 libldap2-dev bzip2 gcc libapr1-dev libaprutil1-dev libxml2-dev build-essential rsync wget && apt-get clean 
+RUN apt-get update && apt-get install -q -y  vim curl bison git openssl libssl-dev pkg-config libpng12-0 libpng12-dev libldap-2.4-2 libldap2-dev bzip2 gcc libapr1-dev libaprutil1-dev libxml2-dev build-essential rsync wget mysql-client ssmtp mailutils && apt-get clean 
+
 
 # Create a user & group (used in httpd.conf)
 RUN groupadd --system apache
@@ -18,9 +19,8 @@ COPY httpd.conf /usr/local/apache2/conf/httpd.conf
 COPY httpd-ssl.conf /usr/local/apache2/conf/extra/httpd-ssl.conf
 COPY httpd-vhosts.conf /usr/local/apache2/conf/extra/httpd-vhosts.conf
 
-
 ## Create a location for your application data
-RUN mkdir -p /var/www/php-app
+RUN mkdir -p /var/www/php-app && chown apache:apache /var/www/php-app
 
 ## Install your application's static files at this point, 
 ## before the location is declared to be a volume
