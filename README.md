@@ -2,7 +2,7 @@
 
 This container has apache set up with php5 and ssl, but it doesn't have any application data.
 
-/var/www/php-app is a volume and is where apache will look for you php app.
+Apache will look for your php app in /var/www/php-app. You probably want to make this a volume.
 
 If you want to edit the Dockerfile to grab your applicaiton files, make sure you do this
 before the VOLUME line or they'll be over-written.
@@ -45,6 +45,7 @@ of your smtp server, e.g.:
 So, run your data container something like:
 
     docker run -it --name=php-app-data \
+    -v /var/www/php-app \
     -v /tmp/server.pem:/usr/local/apache2/conf/server.pem \
     -v /tmp/server.key:/usr/local/apache2/conf/server.key \
     -v /tmp/ssmtp.conf:/etc/ssmtp/ssmtp.conf\
@@ -52,7 +53,7 @@ So, run your data container something like:
 
       cd /var/www/php-app
       printf "<?php\nphpinfo();\n?>\n" > index.php 
-      chown apache:apache test.php
+      chown apache:apache index.php
       exit
 
 

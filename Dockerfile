@@ -22,13 +22,6 @@ COPY httpd-vhosts.conf /usr/local/apache2/conf/extra/httpd-vhosts.conf
 ## Create a location for your application data
 RUN mkdir -p /var/www/php-app && chown apache:apache /var/www/php-app
 
-## Install your application's static files at this point, 
-## before the location is declared to be a volume
-
-
-## Make the application dir a volume
-VOLUME '/var/www/php-app'
-
 ## And create self-signed ssl keys for test purposes (bind mount proper ones to running container)
 RUN openssl req -new -x509 -nodes -out /usr/local/apache2/conf/server.pem -keyout /usr/local/apache2/conf/server.key -days 3650 -subj '/CN=localhost'
 
