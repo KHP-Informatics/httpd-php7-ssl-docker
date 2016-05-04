@@ -1,7 +1,7 @@
 FROM httpd
 MAINTAINER Cass Johnston <cassjohnston@gmail.com>
 
-RUN apt-get update && apt-get install -q -y  vim curl bison git openssl libssl-dev pkg-config libpng12-0 libpng12-dev libldap-2.4-2 libldap2-dev bzip2 gcc libapr1-dev libaprutil1-dev libxml2-dev build-essential rsync wget mysql-client ssmtp mailutils && apt-get clean 
+RUN apt-get update && apt-get install -q -y  vim unzip curl bison git openssl libssl-dev pkg-config libpng12-0 libpng12-dev libldap-2.4-2 libldap2-dev bzip2 gcc libapr1-dev libaprutil1-dev libxml2-dev build-essential rsync wget mysql-client ssmtp mailutils && apt-get clean 
 
 
 # Create a user & group (used in httpd.conf)
