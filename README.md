@@ -1,34 +1,36 @@
-# apache-php-ssl-docker
+# httpd-php7-ssl
 
 This container has apache set up with php5 and ssl, but it doesn't have any application data.
-
-Apache will look for your php app in /var/www/php-app. You probably want to make this a volume.
-
-If you want to edit the Dockerfile to grab your applicaiton files, make sure you do this
-before the VOLUME line or they'll be over-written.
 
 
 ### TO BUILD:
 
-docker build -t whatever/apache-php-ssl-docker:0.1 .
+docker build -t whomever/httpd-php7-ssl:0.1 .
 
 ### TO RUN:
 
-Run an instance as a data container and get your php application 
-into the /var/www/php-app directory.  
-curl, wget and git are all available.  
+Create a data container. Set up your application data, make any necessary changes
+to configuration files. Exit the container. 
+Use volumes to ensure that changes you make to application data or configuration
+settings persist:
 
-Once you're done, you can exit the container (unless you want to
-use it to develop your app). It doesn't need to be running for 
-us to access the volume from a second container. 
 
-The container provides a self-signed SSL cert but if you have a 
-proper one you can also bind-mount the key and cert files at 
-this point
+VOLUMES:
 
-Similarly, if you want to send mail through php the container has ssmtp
-installed, but you'll need to provide a valid config file with details
-of your smtp server, e.g.:
+/var/www/php-app
+  Where apache looks for your php application data. 
+
+
+/usr/local/apache2/conf
+  Apache config files. Has functional default settings.
+  Provides a self-signed SSL cert in /usr/local/apache2/conf/ssl but replace
+  with a real one if you have one.
+
+
+/etc/ssmtp/ssmtp.conf
+  I you want to send mail through php the container has ssmtp installed, but 
+  you'll need to provide a valid config file with details of your smtp server.
+  There is no default provided. Something like this should work:
 
   hostname=my.server.com
   mailhub=smtp.gmail.com:587
@@ -36,20 +38,19 @@ of your smtp server, e.g.:
   AuthUser=someuser@gmail.com
   AuthPass=somepass
 
-(
- note - if you're using a Google account with 2-factor authentication then
- you will need to generate an app password for AuthPass which you can do at
- https://security.google.com/settings/security/apppasswords
-)
+  If you're using a Google account with 2-factor authentication then you will 
+  need to generate an app password for AuthPass which you can do at
+  https://security.google.com/settings/security/apppasswords
+
+
 
 So, run your data container something like:
 
     docker run -it --name=php-app-data \
     -v /var/www/php-app \
-    -v /tmp/server.pem:/usr/local/apache2/conf/server.pem \
-    -v /tmp/server.key:/usr/local/apache2/conf/server.key \
+    -v /usr/local/apache2/conf \
     -v /tmp/ssmtp.conf:/etc/ssmtp/ssmtp.conf\
-    cassj/apache-php-ssl-docker:0.1  /bin/bash
+    cassj/httpd-php7-ssl:0.1  /bin/bash
 
       cd /var/www/php-app
       printf "<?php\nphpinfo();\n?>\n" > index.php 
@@ -70,7 +71,5 @@ values)
               -e ADMINEMAIL=foo@bar.com\
               -e SERVERNAME=localhost\
               --volumes-from php-app-data\
-              cassj/apache-php-ssl-docker:0.1
-
-
+              cassj/httpd-php7-ssl:0.1
 
